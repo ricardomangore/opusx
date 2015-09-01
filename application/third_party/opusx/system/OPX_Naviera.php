@@ -18,6 +18,13 @@ class OPX_Naviera{
 			return FALSE;
 	}
 	
+	public function edit_naviera( $naviera ){
+		if($this->CI->naviera->update_naviera($naviera) >= 0)
+			return TRUE;
+		else 
+			return FALSE;
+	}
+	
 	public function list_navieras(){
 		return $this->CI->naviera->get_list_navieras();
 	}

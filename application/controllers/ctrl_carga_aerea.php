@@ -13,13 +13,23 @@ class CTRL_Carga_Aerea extends OPX_Controller{
 		$this->opx_carga_aerea = new OPX_carga_aerea;
 	}
 	
-	public function index($msm = '', $class= 'default'){
+	public function index($idmsm = '', $idclass= ''){
+		if($idclass == '' && $idmsm == ''){
+			$class = 'default';
+			$msm = '';
+		}elseif($idclass != '' && $idmsm != ''){
+			$msm = $this->opxmessage[$idmsm];
+			$class = $this->opxclass[$idclass];
+		}
+		$data['id_content'] = 'opx_carga_aerea';
 		$data_carga_aerea['rows'] = $this->opx_carga_aerea->list_cargas_aereas();
 		$data_carga_aerea['message'] = $msm;
 		$data_carga_aerea['class']   = $class;
 		if($this->opx_auth->is_auth()){
+			$data['title_content'] = "Intervalos de Cargamento Aéreo";
 			$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');
 			$data['main_menu'] = $this->load->view('menu',$data_menu,TRUE);
+			$data['sidebar'] = $this->load->view('sidebar',NULL,TRUE);
 			$data['main_content'] = $this->load->view('carga_aerea/carga_aerea_form',$data_carga_aerea,TRUE);
 		}
 		else{

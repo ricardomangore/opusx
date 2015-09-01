@@ -24,6 +24,27 @@ class Aeropuerto extends CI_Model{
 			return FALSE; 
 	}
 	
+	/**
+	 * update_aeropuerto()
+	 * 
+	 * Actualiza los datos de un registro de la tabla aeropuerto
+	 * 
+	 * Regresa el numero de registros afectados
+	 * Regresa 0 si no efectuo ningun cambio
+	 */
+	public function update_aeropuerto($aeropuerto){
+		$data = array(
+			'aeropuerto' => $aeropuerto['aeropuerto'],
+			'code' => $aeropuerto['code'],
+			'ciudad' => $aeropuerto['ciudad'],
+			'pais' => $aeropuerto['pais']
+		);
+		$this->db->where('idaeropuerto', ((int) $aeropuerto['idaeropuerto']) );
+		$var = $this->db->update('aeropuerto', $data);
+		return $this->db->affected_rows();
+	}
+
+
 	public function get_aeropuerto(){
 		
 	}

@@ -30,6 +30,7 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 	
 	public function index($msm = '', $class= 'default'){
 		//$data_flete_aereo['rows'] = $this->opx_flete_aereo->list_cargas_aereas();
+		$data['id_content'] = 'opx_flete_aereo';
 		$data_flete_aereo['aeropuertos'] = $this->opx_aeropuerto->list_aeropuertos();
 		$data_flete_aereo['aerolineas'] = $this->opx_aerolinea->list_aerolineas();
 		$data_flete_aereo['carga_aerea'] = $this->opx_carga_aerea->list_cargas_aereas();
@@ -38,8 +39,10 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 		$data_flete_aereo['message'] = $msm;
 		$data_flete_aereo['class']   = $class;
 		if($this->opx_auth->is_auth()){
+			$data['title_content'] = "Fletes Aéreos";
 			$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');
 			$data['main_menu'] = $this->load->view('menu',$data_menu,TRUE);
+			$data['sidebar'] = $this->load->view('sidebar',NULL,TRUE);
 			$data['main_content'] = $this->load->view('flete_aereo/flete_aereo_form',$data_flete_aereo,TRUE);
 		}
 		else{

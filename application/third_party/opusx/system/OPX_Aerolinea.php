@@ -18,6 +18,13 @@ class OPX_Aerolinea{
 			return FALSE;
 	}
 	
+	public function edit_aerolinea( $aerolinea ){
+		if($this->CI->aerolinea->update_aerolinea($aerolinea) >= 0)
+			return TRUE;
+		else 
+			return FALSE;
+	}	
+	
 	public function list_aerolineas(){
 		return $this->CI->aerolinea->get_list_aerolineas();
 	}

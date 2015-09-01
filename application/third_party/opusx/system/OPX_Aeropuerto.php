@@ -18,6 +18,13 @@ class OPX_Aeropuerto{
 			return FALSE;
 	}
 	
+	public function edit_aeropuerto( $aeropuerto ){
+		if($this->CI->aeropuerto->update_aeropuerto($aeropuerto) > 0)
+			return TRUE;
+		else 
+			return FALSE;
+	}	
+	
 	public function list_aeropuertos(){
 		return $this->CI->aeropuerto->get_list_aeropuertos();
 	}

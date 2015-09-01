@@ -9,11 +9,13 @@ class Opusx extends OPX_Controller{
 		}
 		
 		function index($msm = ''){
+			$data['id_content'] = 'opx_login';
 			$data_login['message'] = $msm;
 			if($this->opx_auth->is_auth()){
-				$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');
+				/*$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');
 				$data['main_menu'] = $this->load->view('menu',$data_menu,TRUE);
-				$data['main_content'] = $this->load->view('admin_catalogos',NULL,TRUE);
+				$data['main_content'] = $this->load->view('admin_catalogos',NULL,TRUE);*/
+				header('Location: '. base_url() .'index.php/ctrl_flete_aereo/index');
 			}
 			else{
 				$data['main_menu'] = $this->load->view('menu',NULL,TRUE);

@@ -25,6 +25,23 @@ class Region extends CI_Model{
 			return FALSE; 
 	}
 	
+	/**
+	 * update_region()
+	 * 
+	 * Actualiza los datos de un registro de la tabla region
+	 * 
+	 * Regresa el numero de registros afectados
+	 * Regresa 0 si no efectuo ningun cambio
+	 */
+	public function update_region($region){
+		$data = array(
+			'region' => $region['region']
+		);
+		$this->db->where('idregion', ((int) $region['idregion']) );
+		$var = $this->db->update('region', $data);
+		return $this->db->affected_rows();
+	}
+	
 	public function get_region(){
 		
 	}
@@ -38,4 +55,13 @@ class Region extends CI_Model{
 		else
 			return $query->result_array(); 
 	}
+	
+	public function ssprocess(){
+		$this->db->select('*');
+		$this->db->from('region');
+	}
+	
+	
+	
+	
 }

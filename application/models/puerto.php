@@ -24,6 +24,24 @@ class Puerto extends CI_Model{
 			return FALSE; 
 	}
 	
+	/**
+	 * update_puerto()
+	 * 
+	 * Actualiza los datos de un registro de la tabla region
+	 * 
+	 * Regresa el numero de registros afectados
+	 * Regresa 0 si no efectuo ningun cambio
+	 */
+	public function update_puerto($puerto){
+		$data = array(
+			'puerto' => $puerto['puerto'],
+			'locode' => $puerto['locode']
+		);
+		$this->db->where('idpuerto', ((int) $puerto['idpuerto']) );
+		$var = $this->db->update('puerto', $data);
+		return $this->db->affected_rows();
+	}
+	
 	public function get_puerto(){
 		
 	}

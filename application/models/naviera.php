@@ -25,6 +25,23 @@ class Naviera extends CI_Model{
 			return FALSE; 
 	}
 	
+	/**
+	 * update_naviera()
+	 * 
+	 * Actualiza los datos de un registro de la tabla naviera
+	 * 
+	 * Regresa el numero de registros afectados
+	 * Regresa 0 si no efectuo ningun cambio
+	 */
+	public function update_naviera($naviera){
+		$data = array(
+			'naviera' => $naviera['naviera']
+		);
+		$this->db->where('idnaviera', ((int) $naviera['idnaviera']) );
+		$var = $this->db->update('naviera', $data);
+		return $this->db->affected_rows();
+	}
+	
 	public function get_naviera(){
 		
 	}

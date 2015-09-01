@@ -1,7 +1,12 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-6">
-			<div class="list-group">
+			<ul class="nav nav-pills">
+			  <li role="presentation" class="active"><a href="#">Flete Aéreo</a></li>
+			  <li role="presentation"><a href="#">Flete Marítimo</a></li>
+			  <li role="presentation"><a href="#">Catálogos</a></li>
+			</ul>
+			<!--<div class="list-group">
 			  <a href="#" class="list-group-item active">
 			    Administración de catálogos
 			  </a>
@@ -13,7 +18,7 @@
 			  <a href="<?php echo base_url(); ?>index.php/ctrl_carga_aerea" class="list-group-item">Rangos de Cargamento Aereo</a>
 			  <a href="#" class="list-group-item">Contenedores</a>
 			  <a href="<?php echo base_url(); ?>index.php/ctrl_recargo" class="list-group-item">Recargos</a>
-			</div>
+			</div>-->
 		</div>
 		<div class="col-md-6"></div>
 	</div>

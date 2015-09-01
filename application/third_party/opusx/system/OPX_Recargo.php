@@ -18,6 +18,13 @@ class OPX_Recargo{
 			return FALSE;
 	}
 	
+	public function edit_recargo( $recargo ){
+		if($this->CI->recargo->update_recargo($recargo) >= 0)
+			return TRUE;
+		else 
+			return FALSE;
+	}
+	
 	public function list_recargos(){
 		return $this->CI->recargo->get_list_recargos();
 	}

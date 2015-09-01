@@ -28,6 +28,25 @@ class Recargo extends CI_Model{
 		
 	}
 	
+	/**
+	 * update_recargo()
+	 * 
+	 * Actualiza los datos de un registro de la tabla recargo
+	 * 
+	 * Regresa el numero de registros afectados
+	 * Regresa 0 si no efectuo ningun cambio
+	 */
+	public function update_recargo($recargo){
+		$data = array(
+			'clave' => $recargo['clave'],
+			'costo' => (float)$recargo['costo'],
+			'descripcion' => $recargo['descripcion']
+		);
+		$this->db->where('idrecargo', ((int) $recargo['idrecargo']) );
+		$var = $this->db->update('recargo', $data);
+		return $this->db->affected_rows();
+	}
+	
 	public function get_list_recargos(){
 		$this->db->select('*');
 		$this->db->from('recargo');

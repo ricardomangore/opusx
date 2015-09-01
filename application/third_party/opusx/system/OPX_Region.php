@@ -18,6 +18,13 @@ class OPX_Region{
 			return FALSE;
 	}
 	
+	public function edit_region( $region ){
+		if($this->CI->region->update_region($region) >= 0)
+			return TRUE;
+		else 
+			return FALSE;
+	}
+	
 	public function list_regiones(){
 		return $this->CI->region->get_list_regiones();
 	}
