@@ -56,20 +56,20 @@
             <th>opt</th>
         </tr>
     </tfoot>
-    <?php if(isset($rows)): ?>
     	<tbody>
-    		<?php foreach($rows as $row): ?>
-    			<tr>
-    				<td><?php echo $row['idrecargo'] ?></td>
-    				<td><?php echo $row['clave'] ?></td>
-    				<td><?php echo $row['costo'] ?></td>
-    				<td><?php echo $row['descripcion'] ?></td>
-    				<td>
-    					<button id="opx_btn_edit" type="button" class="btn btn-primary btn-xs opx_btn_edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-    					<button id="opx_btn_delete" type="button" class="btn btn-danger btn-xs opx_btn_delete"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-    				</td>		        				
-    			</tr>
-    		<?php endforeach; ?>
+	    	<?php if($rows): ?>
+	    		<?php foreach($rows as $row): ?>
+	    			<tr>
+	    				<td><?php echo $row['idrecargo'] ?></td>
+	    				<td><?php echo $row['clave'] ?></td>
+	    				<td><?php echo $row['costo'] ?></td>
+	    				<td><?php echo $row['descripcion'] ?></td>
+	    				<td>
+	    					<button id="opx_btn_edit" type="button" class="btn btn-primary btn-xs opx_btn_edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+	    					<button id="opx_btn_delete" type="button" class="btn btn-danger btn-xs opx_btn_delete"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+	    				</td>		        				
+	    			</tr>
+	    		<?php endforeach; ?>
+	    	<?php endif; ?>
     	</tbody>
-    <?php endif; ?>
 </table>		        

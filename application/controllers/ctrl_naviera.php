@@ -2,7 +2,7 @@
 if(!defined('BASEPATH'))
 	exit('No direct script access allowed');
 
-require APPPATH . 'third_party/opusx/system/OPX_Naviera.php';
+
 
 class CTRL_Naviera extends OPX_Controller{
 	

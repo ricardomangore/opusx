@@ -15,6 +15,8 @@ class OPX_Auth{
 	public function __construct(){
 		$this->CI = & get_instance();
 		$this->CI->load->library('session');
+		//Cargamos el archivo de lenguaje
+		$this->CI->lang->load('message','spanish');
 	}
 	
 	/**
@@ -32,28 +34,20 @@ class OPX_Auth{
 	/**
 	 * login()
 	 * 
-	 * efectua el procesos de login de un usuario
+	 * Ejecuta el procesos de login de un usuario
 	 */
-	public function login($username, $password){
+	public function auth_user($username, $password){
 		$user = array(
 			'user'  => $username,
 			'password'	=> $password
 		);
 		$this->CI->load->model('user');
-		$user = $this->CI->user->auth_user($user);
-		if(!$user){
-			return FALSE;
-		}else{
-			$this->CI->session->set_userdata(array(
-					'OPX_AUTH'	=> TRUE,
-					'user'      => $user['user'],
-					'name'      => $user['name'],
-					'last_name' => $user['last_name'],
-					'mail'      => $user['ricardomangore@gmail.com']
-				));
-			return TRUE;
+		try{
+			$result = $this->CI->user->user_auth($user);
+			$this->CI->session->set_userdata(array('OPX_AUTH' => $result));
+		}catch(Exception $e){
+			throw new Exception('Error', $e->getCode());
 		}
-
 	}
 	
 	/**

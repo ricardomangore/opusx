@@ -38,6 +38,7 @@ class CTRL_Flete_Maritimo extends OPX_Controller{
 		$data_flete_maritimo['recargos'] = $this->opx_recargo->list_recargos();
 		$data_flete_maritimo['message'] = $msm;
 		$data_flete_maritimo['class']   = $class;
+		$data_flete_maritimo['rows'] = false;
 		if($this->opx_auth->is_auth()){
 			$data['title_content'] = "Fletes Marítimos";
 			$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');

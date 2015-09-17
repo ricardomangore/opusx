@@ -10,76 +10,145 @@ class User extends CI_Model{
 		$this->load->helper('security');
 	}	
 	
+	
 	/**
-	 * get_menu_items()
+	 * set_user()
 	 * 
-	 * Optiene los items que compondran el menu del suaurio segun su rol o grupo al que pertenezca
+	 * Inserta el registro de un usuario en la tabla user
+	 * 
+	 * @param	array	$data	Arreglo asociativo con pares de campo-valor
+	 * 							'user'
+	 * 							'password'
+	 * 							'name'
+	 * 							'last_name'
+	 * 							'mail'
 	 */
-	public function get_menu_items($user_id = NULL){
-		if(is_null($user_id))
-			$items = NULL;
-		else	
-			$items = array(
-				'item1',
-				'item2',
-				'item3'
-			);
-		return $items;
+	public function set_user( $data){
+		if(!$this->db->insert('opx_user', $data)){//Si no pudo efectuar la inserción
+			throw new Exception('Error',1001);		
+		}
 	}
 	
-	
 	/**
-	 * auth_user()
+	 * get_user_by_id()
 	 * 
-	 * Optienen los datos del usuario por autenticacion
+	 * Retorna el registro de la tabla opx_user buscandolo por iduser
 	 * 
-	 * Regresa FALSE si no esta autenticado
-	 * Regresa TRUE si el usuario es valido
+	 * @param	int		$iduser		Identificador de usuaario en la tabla de
 	 */
-	public function auth_user( $user ){
-		$this->db->select('*');
-		$this->db->from('opx_user');
-		$this->db->where('user',$user['user']);
-		$this->db->where('password',do_hash($user['password'],'md5'));
-		$query = $this->db->get();
-		if(empty($query->result_array()))
-			return FALSE;
+	public function get_user_by_id($iduser){
+		$query = $this->db->select('user,name,last_name,mail')
+						  ->where('id_user',$iduser)
+						  ->get('opx_user');
+		$result = $query->result_array();
+		if(empty($query->result_array())){
+			throw new Exception('Error', 1002);
+		}
 		else
 			return $query->result_array();
 	}
 	
 	/**
-	 * set_user()
+	 * user_auth()
 	 * 
-	 * Inserta un usuario en la base de datos
+	 * Determina con base en el nombre de usuario y password si el usuario esta registrado
 	 * 
-	 * Retorna 1 si el registro fue insertado
+	 * @param	array	$user	Arreglo asociativo con las credenciales del usuario
 	 */
-	public function set_user( $user ){
-		$user['password'] = do_hash($user['password'],'md5');
-		if($this->db->insert('opx_user', $user ))
-			return TRUE;
-		else
-			return FALSE; 
+	 public function user_auth( $user = null ){
+	 	if(isset($user)){
+		 	extract($user);
+			$this->db->select('id_user,user,name,last_name,mail');
+			$this->db->from('opx_user');
+			$this->db->where('user',$user);
+			$this->db->where('password',$password);
+			$query = $this->db->get();
+			if(empty($query->result_array()))
+				throw new Exception('Error', 1003);
+			else
+				return $query->result_array();
+		}else{
+			throw new Exception('Error', 6001);
+		}
+	 }
+	
+	/**
+	 * get_users()
+	 * 
+	 * Regresa una lista de usuarios delimitada en orden u longitud por los parametros
+	 * 
+	 * @param	array	$param  Arreglo asociativo con valores para los parametros de busqueda
+	 * 							'offset'	desplazamiento de la busqueda
+	 * 							'value'		número de registros devueltos en la busqueda
+	 * 							'orderby'	campo sobre el cual ordenar
+	 * 							'direction'	Tipo de order 'ASC' o 'DESC'
+	 * 
+	 */
+	public function get_users($param = null){
+		if(isset($param))
+			extract($param);
+		$this->db->select('id_user,user,name,last_name,mail');
+		$this->db->from('opx_user');
+		if(isset($offset))
+			$this->db->limit($value,$offset);
+		if(isset($orderby))
+			$this->db->order_by($orderby,$direction);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		if(empty($result)){
+			throw new Exception('Error', 1004);
+		}else{
+			return $result;
+		}
+		
 	}
 	
 	/**
-	 * user_exist()
+	 * update_user()
 	 * 
-	 * Determina si un usuario existe
+	 * Actualiza los datos de un usuario
 	 * 
-	 * Retorna TRUE si el usuario existe 
-	 * Retorna FALSE si el usuario no existe
+	 * @param	array	$user	Arreglo con los datos a actualizar de un usuario
 	 */
-	public function username_exist( $user ){
-		$this->db->select('*');
-		$this->db->from('opx_user');
-		$this->db->where('user',$user['user']);
-		$query = $this->db->get();		
-		if(empty($query->result_array()))//Si esta el arreglo esta vacio el usuario NO existe
-			return FALSE;
-		else
-			return TRUE; 
-	}
+	public function update_user_profile( $user = null){
+		if(isset($user)){
+			extract($user);
+			$data = array();
+			$this->db->where('id_user', $id_user);
+			if(isset($user))
+				$data['user'] = $user;
+			if(isset($name))
+				$data['name'] = $name;
+			if(isset($last_name)) 
+				$data['last_name']= $last_name;
+			if(isset($mail))
+				$data['mail'] = $mail;
+			if(isset($password))
+				$data['password'] = $password;
+			$result = $this->db->update('opx_user', $data);
+			if(!$result){
+				throw new Exception('Error', 1005);
+			}
+		}else{
+			throw new Exception('Error', 6001);
+		}
+	} 
 	
-}
+	/**
+	 * delete_user()
+	 * 
+	 * 
+	 */
+	public function delete_user($user = null){
+		if(isset($user)){
+			extract($user);
+			$this->db->where('id_user',$id_user);
+			$this->db->delete('opx_user');
+			$affected_rows = $this->db->affected_rows();
+			if($affected_rows == 0)
+				throw new Exception('Error', 1006);
+		}else{
+			throw new Exception('Error', 6001);
+		}	
+	}
+}//Termina la clase de modelo User

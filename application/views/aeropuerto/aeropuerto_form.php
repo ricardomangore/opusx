@@ -64,21 +64,21 @@
             <th>opt</th>
         </tr>
     </tfoot>
-    <?php if(isset($rows)): ?>
     	<tbody>
-    		<?php foreach($rows as $row): ?>
-    			<tr>
-    				<td><?php echo $row['idaeropuerto'] ?></td>
-    				<td><?php echo $row['code'] ?></td>
-    				<td><?php echo $row['aeropuerto'] ?></td>
-    				<td><?php echo $row['ciudad'] ?></td>
-    				<td><?php echo $row['pais'] ?></td>
-    				<td>
-    					<button id="opx_btn_edit" type="button" class="btn btn-primary btn-xs opx_btn_edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
-    					<button id="opx_btn_delete" type="button" class="btn btn-danger btn-xs opx_btn_delete"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
-    				</td>		        				
-    			</tr>
-    		<?php endforeach; ?>
+    		<?php if($rows): ?>
+	    		<?php foreach($rows as $row): ?>
+	    			<tr>
+	    				<td><?php echo $row['idaeropuerto'] ?></td>
+	    				<td><?php echo $row['code'] ?></td>
+	    				<td><?php echo $row['aeropuerto'] ?></td>
+	    				<td><?php echo $row['ciudad'] ?></td>
+	    				<td><?php echo $row['pais'] ?></td>
+	    				<td>
+	    					<button id="opx_btn_edit" type="button" class="btn btn-primary btn-xs opx_btn_edit"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+	    					<button id="opx_btn_delete" type="button" class="btn btn-danger btn-xs opx_btn_delete"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span></button>
+	    				</td>		        				
+	    			</tr>
+	    		<?php endforeach; ?>
+	    	<?php endif; ?>
     	</tbody>
-    <?php endif; ?>
 </table>		        

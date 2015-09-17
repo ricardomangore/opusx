@@ -38,6 +38,7 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 		$data_flete_aereo['recargos'] = $this->opx_recargo->list_recargos();
 		$data_flete_aereo['message'] = $msm;
 		$data_flete_aereo['class']   = $class;
+		$data_flete_aereo['rows'] = false;
 		if($this->opx_auth->is_auth()){
 			$data['title_content'] = "Fletes Aéreos";
 			$data_menu['menu_items'] = $this->opx_user->get_menu_items('admin');
