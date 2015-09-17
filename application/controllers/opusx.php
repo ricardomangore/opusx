@@ -4,13 +4,16 @@ if(!defined('BASEPATH'))
 
 class Opusx extends OPX_Controller{
 	
-	public function index(){
-		$data['header']   = $this->load->view('system/header',NULL,TRUE);
-		$data['content'] = $this->load->view('system/login',NULL,TRUE);
-		$data['footer'] = $this->load->view('system/footer',NULL,TRUE);
-		$this->load->view('system/layout',$data);		
+	
+	public function __construct(){
+		parent::__construct();
+		if(!$this->opx_auth->is_authenticated())
+			self::login();	
 	}
 	
+	public function index(){
+
+	}
 	
 	/**
 	 * login()
@@ -40,16 +43,10 @@ class Opusx extends OPX_Controller{
 		$data['footer'] = $this->load->view('system/footer',NULL,TRUE);
 		$this->load->view('system/layout',$data);
 	}
-
-	function callback_check_login($test){
-		if($test == 'ricardo')
-			return TRUE;
-		else
-			return FALSE;
-	}
 	
 	public function logout(){
-		
+		$this->opx_auth->logout();
+			redirect('login');
 	}
 	
 }

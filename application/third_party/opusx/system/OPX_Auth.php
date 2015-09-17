@@ -17,6 +17,7 @@ class OPX_Auth{
 		$this->CI->load->library('session');
 		//Cargamos el archivo de lenguaje
 		$this->CI->lang->load('message','spanish');
+		log_message('info','OPX_Auth Inicializado');
 	}
 	
 	/**
@@ -24,7 +25,7 @@ class OPX_Auth{
 	 * 
 	 * Determina con base a la variable de session OPX_AUTH si el usuario esta autenticado o no
 	 */
-	public function is_auth(){
+	public function is_authenticated(){
 		if($this->CI->session->userdata('OPX_AUTH'))
 			return TRUE;
 		else	
@@ -56,12 +57,8 @@ class OPX_Auth{
 	 * efectua el procesos de logout para un usuario
 	 */
 	 public function logout(){
-	 	$this->CI->session->unset_userdata(array(
-	 				'OPX_AUTH'	  => TRUE,
-					'user_name'   => 'admin',
-					'user_group'  => 0,
-					'user_mail'   => 'ricardomangore@gmail.com'
-				));
+	 	//$this->CI->session->unset_userdata('OPX_AUTH');
 		$this->CI->session->sess_destroy();
 	 }
+	 
 }

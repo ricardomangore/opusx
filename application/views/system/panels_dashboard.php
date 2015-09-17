@@ -1,8 +1,4 @@
 <div class="row">
-	<h2><i class="fa fa-dashboard"></i> Dashboard</h2>
-	<hr>
-</div>
-<div class="row">
 	<div class="col-md-3">
 		<div class="panel panel-success">
 			<div class="panel-heading">

@@ -50,8 +50,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'opusx';
-$route['index'] = 'opusx/index';
+//$route['index'] = 'opusx/index';
 $route['login'] = 'opusx/login';
+$route['logout'] = 'opusx/logout';
 $route['dashboard'] = 'ctrl_dashboard/index';
+$route['fletes_maritimos'] = 'ctrl_flete_maritimo/index';
+$route['fletes_aereos'] = 'ctrl_flete_aereo/index';
+$route['navieras'] = 'ctrl_naviera/index';
+$route['puertos'] = 'ctrl_puerto/index';
+$route['aerolineas'] = 'ctrl_aerolinea/index';
+$route['aeropuertos'] = 'ctrl_aeropuerto/index';
+$route['contenedores'] = 'ctrl_contenedor/index';
+$route['carga_consolidada'] = 'ctrl_carga_consolidada/index';
+$route['recargos'] = 'ctrl_recargo/index';
+$route['regiones'] = 'ctrl_region/index';
+$route['editregion/(:num)'] = 'ctrl_region/edit/$1';
+$route['deleteregion/(:num)'] = 'ctrl_region/delete/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

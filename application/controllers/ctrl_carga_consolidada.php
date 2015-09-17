@@ -1,8 +1,7 @@
 <?php
-if(!defined('BASEPATH'))
-	exit('No direct script access allowed');
-	
-class CTRL_Puerto extends OPX_Controller{
+if(!defined('BASEPATH'))exit('No direct script access allowed');
+
+class CTRL_Carga_Consolidada extends OPX_Controller{
 	
 	public function __construct(){
 		parent::__construct();
@@ -17,8 +16,8 @@ class CTRL_Puerto extends OPX_Controller{
 			'item_menu_fletes_aereos' => '',
 			'item_menu_catalogos' => 'active',
 		);
-		$data_dashboard['icon_title'] = 'anchor';
-		$data_dashboard['header_dashboard'] = 'Puertos';
+		$data_dashboard['icon_title'] = 'cubes';
+		$data_dashboard['header_dashboard'] = 'Carga Consolidada';
 		
 		$data_header['menu'] = $this->load->view('system/menu',NULL,TRUE);
 		$data['header']   = $this->load->view('system/header',$data_header,TRUE);
@@ -27,5 +26,5 @@ class CTRL_Puerto extends OPX_Controller{
 		$data['content'] = $this->load->view('system/dashboard',$data_dashboard,TRUE);
 		$this->load->view('system/layout',$data);
 	}
-	
+		
 }

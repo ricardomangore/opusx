@@ -14,10 +14,6 @@ require APPPATH . 'third_party/opusx/system/OPX_Auth.php';
 
 
 class OPX_Controller extends CI_Controller{
-	
-	
-	public static $system_messages;
-	public $opx_auth;
 
 	public function __construct(){
 		parent::__construct();	
@@ -29,18 +25,7 @@ class OPX_Controller extends CI_Controller{
 		$this->load->database();
 		//Cargamos el archivo de lenguaje
 		$this->lang->load('message','spanish');
-		$this->opx_auth = new OPX_Auth;
+		$this->opx_auth = new OPX_Auth();
 	}
-	
-	private function authenticate(){
-		$auth = $this->session->userdata('OPX_AUTH');
-		/* Si la variable de session OPX_AUTH no esta inicializada y la URI es diferente a la de /login
-		 * regresa a /login
-		 */
-		 
-		if(!isset($auth) && $this->uri->uri_string() != 'index')
-			redirect('index');
-		else
-			redirect('dashboard');
-	}
+
 }
