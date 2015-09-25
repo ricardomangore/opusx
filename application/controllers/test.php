@@ -10,6 +10,8 @@ class Test extends CI_Controller{
 		parent::__construct();
 		$this->load->helper('url');
 		$this->load->model('region');
+		$this->load->helper('form');
+		$this->load->library('form_validation');
 		self::$er = "ER test";
 	}
 	
@@ -37,6 +39,19 @@ class Test extends CI_Controller{
 		self::$er = "ER modificado";
 		$this->index();
 	}
+	
+	/**
+	 * Test de Delte Aerolinea
+	 */
+	 public function test_delete_aerolinea(){
+	 	$this->load->model('aerolinea');
+		try{
+			$this->aerolinea->delete_aerolinea(array('idaerolinea'=>'1','aerolinea' => ''));
+			echo "termino";
+		}catch(Exception $e){
+			echo $e->getCode();
+		}
+	 }
 	
 	/**
 	 * inserta un registro en la tabla de recargo aereos y recargaos, dado un ID de aerolinea y los valores de los campos de cada tabla 
@@ -180,6 +195,26 @@ class Test extends CI_Controller{
 			$this->carga_aerea->test_ex();
 		}catch(Exception $e){
 			echo "Error: " . $e->getCode(). "-". $e->getMessage() ;
+		}
+	}
+	
+	public function test_form(){
+
+		$this->form_validation->set_rules('opcion','Opcion','required|callback_select_validate');
+		$this->form_validation->set_rules('nombre','Nombre','required');
+		if($this->form_validation->run() === FALSE){
+			$this->load->view('formtest');
+		}else{
+			$this->load->view('formtest');
+		}
+	}
+	
+	public function select_validate($param){
+		if($param == 'none'){
+			$this->form_validation->set_message('select_validate', 'Please Select Your City.');
+			return FALSE;
+		}else{
+			return TRUE;
 		}
 	}
 		

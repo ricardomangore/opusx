@@ -11,8 +11,8 @@
 			<li><a href="<?php echo base_url();?>aeropuertos"><i class="fa fa-road"></i> Aeropuertos</a></li>
 			<li><a href="<?php echo base_url();?>contenedores"><i class="fa fa-cube"></i> Contenedores</a></li>  							
 			<li><a href="<?php echo base_url();?>carga_consolidada"><i class="fa fa-cubes"></i> Carga Consolidada</a></li>
-			<li><a href="<?php echo base_url();?>recargos"><i class="fa fa-calculator"></i> Recargos</a></li>
-			<li><a href="<?php base_url(); ?>regiones"><i class="fa fa-map"></i> Región</a></li>
+			<li><a href="<?php echo base_url();?>recargos_aereos"><i class="fa fa-calculator"></i> Recargos Aereos</a></li>
+			<li><a href="<?php echo base_url(); ?>regiones"><i class="fa fa-map"></i> Región</a></li>
 		</ul>
 	</li>
 </ul>

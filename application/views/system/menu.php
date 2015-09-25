@@ -7,7 +7,7 @@
 			</a>
 			<ul class="dropdown-menu">
 				<li><a href="#"><i class="fa fa-gear"></i> Perfil</a></li>
-				<li><a href="logout"><i class="fa fa-sign-out"></i> Salir</a></li>
+				<li><a href="<?php echo base_url(); ?>logout"><i class="fa fa-sign-out"></i> Salir</a></li>
 			</ul>
 		</li>
 	</ul>

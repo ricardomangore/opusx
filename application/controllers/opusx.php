@@ -7,12 +7,12 @@ class Opusx extends OPX_Controller{
 	
 	public function __construct(){
 		parent::__construct();
-		if(!$this->opx_auth->is_authenticated())
-			self::login();	
 	}
 	
 	public function index(){
-
+		log_message('info','xxxxxxxxxxx');
+		if(!$this->opx_auth->is_authenticated())
+			$this->login();
 	}
 	
 	/**
