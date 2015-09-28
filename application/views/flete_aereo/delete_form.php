@@ -1,8 +1,8 @@
 <div class="row">
 	<ul class="nav nav-pills">
-	  <li role="presentation"><a href="<?php echo base_url();?>addrecargo_aereo"><i class="fa fa-plus-square"></i> Agregar</a></li>
-	  <li role="presentation"><a href="<?php echo base_url();?>editrecargo_aereo/0"><i class="fa fa-pencil"></i> Editar</a></li>
-	  <li role="presentation" class="active"><a href="<?php echo base_url();?>deleterecargo_aereo/0"><i class="fa fa-trash"></i> Eliminar</a></li>
+	  <li role="presentation"><a href="<?php echo base_url();?>addaeropuerto"><i class="fa fa-plus-square"></i> Agregar</a></li>
+	  <li role="presentation"><a href="<?php echo base_url();?>editaeropuerto/0"><i class="fa fa-pencil"></i> Editar</a></li>
+	  <li role="presentation" class="active"><a href="<?php echo base_url();?>deleteaeropuerto/0"><i class="fa fa-trash"></i> Eliminar</a></li>
 	</ul>
 </div>
 <div class="row">

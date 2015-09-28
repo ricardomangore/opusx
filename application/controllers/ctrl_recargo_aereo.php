@@ -46,6 +46,11 @@ class CTRL_Recargo_Aereo extends OPX_Controller{
 		$costo = xss_clean($this->input->post('costo'));
 		$idaerolinea = xss_clean($this->input->post('idaerolinea'));
 		//Se validan los valores
+		try{
+			$data_recargo_aereo_form['aerolineas'] = $this->aerolinea->get_aerolineas();
+		}catch(Exception $e){
+			$data_recargo_aereo_form['aerolineas'] = NULL;
+		}
 		$this->form_validation->set_rules('clave', 'Clave', 'required', array('required' => $this->lang->line('error_required_clave')));
 		$this->form_validation->set_rules('costo', 'Costo', 'required', array('required' => $this->lang->line('error_required_costo')));
 		$this->form_validation->set_rules('idaerolinea', 'ID Aerolínea', 'callback_aerolinea_check');
@@ -63,8 +68,7 @@ class CTRL_Recargo_Aereo extends OPX_Controller{
 			$data_recargo_aereo_form['rows'] = $this->recargo_aereo->get_recargos_aereos(); 
 		}catch(Exception $e){
 			$data_recargo_aereo_form['rows'] = NULL;
-		}
-		$data_recargo_aereo_form['aerolineas'] = $this->aerolinea->get_aerolineas();			
+		}			
 		$data_dashboard['content_dashboard'] = $this->load->view('recargo_aereo/add_form',$data_recargo_aereo_form,TRUE); 	
 		$data['content'] = $this->load->view('system/dashboard',$data_dashboard,TRUE);
 		$this->load->view('system/layout',$data);

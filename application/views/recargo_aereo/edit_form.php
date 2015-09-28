@@ -1,8 +1,8 @@
 <div class="row">
 	<ul class="nav nav-pills">
-	  <li role="presentation"><a href="<?php echo base_url();?>addaeropuerto"><i class="fa fa-plus-square"></i> Agregar</a></li>
-	  <li role="presentation"  class="active"><a href="<?php echo base_url();?>editaeropuerto/0"><i class="fa fa-pencil"></i> Editar</a></li>
-	  <li role="presentation"><a href="<?php echo base_url();?>deleteaeropuerto/0"><i class="fa fa-trash"></i> Eliminar</a></li>
+	  <li role="presentation"><a href="<?php echo base_url();?>addrecargo_aereo"><i class="fa fa-plus-square"></i> Agregar</a></li>
+	  <li role="presentation"  class="active"><a href="<?php echo base_url();?>editrecargo_aereo/0"><i class="fa fa-pencil"></i> Editar</a></li>
+	  <li role="presentation"><a href="<?php echo base_url();?>deleterecargo_aereo/0"><i class="fa fa-trash"></i> Eliminar</a></li>
 	</ul>
 </div>
 <div class="row">
@@ -37,7 +37,7 @@
 		  <div class="form-group <?php if(form_error('idaerolinea')!='') echo 'has-error';?>">
 		    <label for="aeropuerto" class="col-sm-2 control-label">Aerolínea</label>
 		    <div class="col-sm-4">
-		      <select class="select_aerolineas" data-live-search='true' name="idaerolinea">
+		      <select class="select_aerolinea" data-live-search='true' name="idaerolinea">
 		      	<option value="none">Seleccione una aerolínea</option>
 		      	<?php foreach($aerolineas as $aerolinea):?>
 		      		<?php if($aerolinea['idaerolinea'] == $idaerolinea): ?>
