@@ -66,25 +66,84 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 		}	
 		//Se optienen y limpian los valores enviados desde el formulario
 		
-		$clave = xss_clean($this->input->post('clave'));
-		$descripcion = xss_clean($this->input->post('descripcion'));
-		$costo = xss_clean($this->input->post('costo'));
+		$via_bool = TRUE;//xss_clean($this->input->post('via_bool'));
+		$idvias = xss_clean($this->input->post('idvias[]'));
+		$idrecargos = xss_clean($this->input->post('idrecargos[]'));
+		$aol = xss_clean($this->input->post('aol'));
+		$aod = xss_clean($this->input->post('aod'));
+		$idregion = xss_clean($this->input->post('idregion'));
 		$idaerolinea = xss_clean($this->input->post('idaerolinea'));
+		$vigencia = xss_clean($this->input->post('vigencia'));
+		$minimo = xss_clean($this->input->post('minimo'));
+		$normal = xss_clean($this->input->post('normal'));
+		$precio1 = xss_clean($this->input->post('precio1'));
+		$precio2 = xss_clean($this->input->post('precio2'));
+		$precio3 = xss_clean($this->input->post('precio3'));
+		$precio4 = xss_clean($this->input->post('precio4'));
+		$precio5 = xss_clean($this->input->post('precio5'));
+		$precios = array();
+		if(isset($precio1))
+			array_push($precios,array(
+				'min' => 45,
+				'max' => 99,
+				'precio' => $precio1
+			));
+		if(isset($precio2))
+			array_push($precios,array(
+				'min' => 100,
+				'max' => 299,
+				'precio' => $precio2
+			));
+		if(isset($precio3))
+			array_push($precios,array(
+				'min' => 300,
+				'max' => 499,
+				'precio' => $precio3
+			));
+		if(isset($precio4))
+			array_push($precios,array(
+				'min' => 500,
+				'max' => 999,
+				'precio' => $precio4
+			));
+		if(isset($precio5))
+			array_push($precios,array(
+				'min' => 1000,
+				'max' => 1000000,
+				'precio' => $precio5
+			));											
 		
 		//Se validan los valores
-		$this->form_validation->set_rules('clave', 'Clave', 'required', array('required' => $this->lang->line('error_required_clave')));
-		$this->form_validation->set_rules('costo', 'Costo', 'required', array('required' => $this->lang->line('error_required_costo')));
-		$this->form_validation->set_rules('idaerolinea', 'ID Aerolínea', 'callback_aerolinea_check');
+		$this->form_validation->set_rules('idaerolinea', 'IDAerolinea', 'callback_idaerolinea_check');
+		$this->form_validation->set_rules('idregion', 'IDregion', 'callback_idregion_check');
+		$this->form_validation->set_rules('aol', 'aol', 'callback_aol_check');
+		$this->form_validation->set_rules('aod', 'aod', 'callback_aod_check');
+		$this->form_validation->set_rules('vigencia', 'Vigencia', 'required');
+
 		
 		if($this->form_validation->run() == FALSE){//Los valores no pasaron el test de validación
 			$data_dashboard['content_dashboard'] = $this->load->view('flete_aereo/add_form',$data_flete_aereo_form,TRUE);
 		}else{//Los valores aprobaron el test de validación
-			$this->flete_aereo->set_flete_aereo(array(
-													'clave' => $clave,
-													'descripcion' => $descripcion,
-													'costo' => $costo,
-													'idaerolinea' => $idaerolinea
-													));
+			$flete_aereo = array(
+				'aol' => $aol,
+				'aod' => $aod,
+				'idregion' => $idregion,
+				'idaerolinea' => $idaerolinea,
+				'vigencia' => $vigencia,
+				'minimo' => $minimo,
+				'normal' => $normal,
+				'has_via' => $via_bool,
+				'vias' => $idvias,
+				'intervalos' => $precios,
+				'has_recargos' => TRUE,
+				'recargos' => $idrecargos
+				
+			);
+			try{
+				$this->flete_aereo->set_flete_aereo($flete_aereo);
+			}catch(Exception $e){
+				echo $e->getCode();
+			}
 		}	
 		try{
 			$data_flete_aereo_form['rows'] = $this->flete_aereo->get_fletes_aereos(); 
@@ -230,12 +289,53 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 	 * call_back_aerolinea
 	 */
 	 
-	public function aerolinea_check($str){
+	public function idaerolinea_check($str){
 		if($str == 'none'){
-			$this->form_validation->set_message('aerolinea_check', 'Seleccione una aerolínea');
+			$this->form_validation->set_message('idaerolinea_check', 'Seleccione una aerolínea');
 			return FALSE;
 		}else{
 			return TRUE;			
 		}
 	}	
+	
+	/**
+	 * call_back_idregion
+	 */
+	 
+	public function idregion_check($str){
+		if($str == 'none'){
+			$this->form_validation->set_message('idregion_check', 'Seleccione una región');
+			return FALSE;
+		}else{
+			return TRUE;			
+		}
+	}
+	
+	/**
+	 * call_back_aol
+	 */
+	 
+	public function aol_check($str){
+		if($str == 'none'){
+			$this->form_validation->set_message('aol_check', 'Seleccione un Aéropuerto de Origen');
+			return FALSE;
+		}else{
+			return TRUE;			
+		}
+	}
+	
+	
+	/**
+	 * call_back_aod
+	 */
+	 
+	public function aod_check($str){
+		if($str == 'none'){
+			$this->form_validation->set_message('aod_check', 'Seleccione un Aéropuerto de Destino');
+			return FALSE;
+		}else{
+			return TRUE;			
+		}
+	}	
+		
 }

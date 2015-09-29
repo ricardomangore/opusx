@@ -42,7 +42,6 @@ class Flete_Aereo extends CI_Model{
 			$this->db->insert('flete_aereo', $flete_aereo );
 			$idflete_aereo = $this->db->insert_id();
 			foreach($intervalos as $intervalo){
-								var_dump($intervalos);
 				$this->db->insert('intervalo', array(
 					'idflete_aereo' => $idflete_aereo,
 					'precio' => $intervalo['precio'],
@@ -88,6 +87,8 @@ class Flete_Aereo extends CI_Model{
 				extract($param);
 			$this->db->select('*');
 			$this->db->from('flete_aereo');
+			$this->db->join('region','flete_aereo.idregion = region.idregion','left');
+			$this->db->join('aerolinea','flete_aereo.idaerolinea = aerolinea.idaerolinea', 'left');
 			if(isset($offset))
 				$this->db->limit($value,$offset);
 			if(isset($orderby))
@@ -128,7 +129,8 @@ class Flete_Aereo extends CI_Model{
 				$this->db->from('rel_flete_aereo_recargo_aereo');
 				$this->db->join('recargo_aereo','rel_flete_aereo_recargo_aereo.idrecargo_aereo = recargo_aereo.idrecargo_aereo','left');
 				$this->db->join('aerolinea','recargo_aereo.idaerolinea = recargo_aereo.idaerolinea','left');
-				$this->db->join('recargo','recargo_aereo.idrecargo = recargo.idrecargo','left');					
+				$this->db->join('recargo','recargo_aereo.idrecargo = recargo.idrecargo','left');
+				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);					
 				$query_recargos = $this->db->get();
 				$data = array(
 					'flete_aereo' => $flete_aereo_row,
