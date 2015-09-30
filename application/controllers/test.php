@@ -217,6 +217,12 @@ class Test extends CI_Controller{
 			return TRUE;
 		}
 	}
+	
+	public function test_recargos(){
+		
+		$this->load->model('flete_aereo');
+		$this->flete_aereo->test_recargos_aereos();
+	}
 		
 	
 }

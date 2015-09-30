@@ -75,6 +75,17 @@
 			  		<?php endforeach; ?>
 			  	</select>
 			</div>			
+		  </div>
+		  
+		  <div class="form-group">
+		  	<div class="col-sm-2">
+				<label class="radio-inline">
+				  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Directo
+				</label>
+				<label class="radio-inline">
+				  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Con Escalas
+				</label>
+			</div>
 		  </div>		  
 
 
@@ -236,7 +247,7 @@
 	    					<?php endforeach;?>
 	    					<td>
 	    						<?php 
-	    							foreach($recargos as $recargo){
+	    							foreach($row['recargos'] as $recargo){
 	    								echo "Clave: " . $recargo['clave'] . "<br/>";
 										echo "Descripción: " . $recargo['descripcion'] . "<br/>";
 										echo "Precio: $ " . $recargo['costo'] . "<hr><br/>";								

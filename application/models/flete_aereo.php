@@ -85,7 +85,7 @@ class Flete_Aereo extends CI_Model{
 		$this->db->trans_start();
 			if(isset($param))
 				extract($param);
-			$this->db->select('*');
+			$this->db->select('idflete_aereo,via,aol,aod,region.idregion,region.region, aerolinea.idaerolinea, aerolinea.aerolinea, vigencia,minimo,normal');
 			$this->db->from('flete_aereo');
 			$this->db->join('region','flete_aereo.idregion = region.idregion','left');
 			$this->db->join('aerolinea','flete_aereo.idaerolinea = aerolinea.idaerolinea', 'left');
@@ -97,38 +97,36 @@ class Flete_Aereo extends CI_Model{
 			$flete_aereo_array = $query->result_array();
 			
 			$flete_aereo_result = array();
-			
 			foreach($flete_aereo_array as $flete_aereo_row){
-				/*print_r($flete_aereo_row);
-				echo "<br>";*/
-				$this->db->select('*');
+
+				$this->db->select('code,pais,ciudad,aeropuerto');
 				$this->db->from('aeropuerto');
 				$this->db->where('idaeropuerto', $flete_aereo_row['aol']);
 				$query_aol = $this->db->get();
 				$query_aol->result_array();
 
-				$this->db->select('*');
+				$this->db->select('code,pais,ciudad,aeropuerto');
 				$this->db->from('aeropuerto');
 				$this->db->where('idaeropuerto', $flete_aereo_row['aod']);
 				$query_aod = $this->db->get();
 				$query_aod->result_array();		
 				
-				$this->db->select('*');
+				$this->db->select('code,pais,ciudad,aeropuerto');
 				$this->db->from('via2');
 				$this->db->join('aeropuerto','via2.idaeropuerto = aeropuerto.idaeropuerto','left');
 				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);
 				$query_via = $this->db->get();
 				$query_via->result_array();	
 				
-				$this->db->select('*');
+				$this->db->select('min,max,precio');
 				$this->db->from('intervalo');
 				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);	
 				$query_precios = $this->db->get();
 				
-				$this->db->select('idrel_flete_aereo_recargo_aereo, aerolinea,clave,descripcion,costo');
+				$this->db->select('idrel_flete_aereo_recargo_aereo,idflete_aereo, aerolinea,clave,descripcion,costo');
 				$this->db->from('rel_flete_aereo_recargo_aereo');
 				$this->db->join('recargo_aereo','rel_flete_aereo_recargo_aereo.idrecargo_aereo = recargo_aereo.idrecargo_aereo','left');
-				$this->db->join('aerolinea','recargo_aereo.idaerolinea = recargo_aereo.idaerolinea','left');
+				$this->db->join('aerolinea','recargo_aereo.idaerolinea = aerolinea.idaerolinea','left');
 				$this->db->join('recargo','recargo_aereo.idrecargo = recargo.idrecargo','left');
 				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);					
 				$query_recargos = $this->db->get();
@@ -235,5 +233,20 @@ class Flete_Aereo extends CI_Model{
 			$this->db->trans_commit();
 			return TRUE;
 		}
+	 }
+	 
+	 
+	 /**
+	  * Test recargos
+	  */
+	 public function test_recargos_aereos(){
+	 			$this->db->select('idrel_flete_aereo_recargo_aereo,idflete_aereo, aerolinea,clave,descripcion,costo');
+				$this->db->from('rel_flete_aereo_recargo_aereo');
+				$this->db->join('recargo_aereo','rel_flete_aereo_recargo_aereo.idrecargo_aereo = recargo_aereo.idrecargo_aereo','left');
+				$this->db->join('aerolinea','recargo_aereo.idaerolinea = aerolinea.idaerolinea','left');
+				$this->db->join('recargo','recargo_aereo.idrecargo = recargo.idrecargo','left');
+				$this->db->where('idflete_aereo', '9');					
+				$query_recargos = $this->db->get();
+				var_dump($query_recargos->result_array());
 	 }
 }
