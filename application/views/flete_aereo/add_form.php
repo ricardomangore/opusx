@@ -14,9 +14,29 @@
 			<?php echo validation_errors('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ','</div>'); ?>
 			</div>
 		</div>
-		<form class="form-horizontal" method="POST" action="<?php echo base_url();?>addflete_aereo">
-		
-		
+		<form class="form-horizontal" method="POST" action="<?php echo base_url();?>addflete_aereo">		
+
+		  <div class="form-group">
+		  	<label for="destino" class="col-sm-2 control-label">Origen</label>
+		  	<div class="col-sm-2 <?php if(form_error('aol')!='') echo 'has-error';?>">
+			  	<select class="select_origen" data-live-search="true" name="aol">
+					<option value="none">Seleccione un Origen</option>			  	
+			  		<?php foreach($aeropuertos as $aeropuerto): ?>
+			  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
+			  		<?php endforeach; ?>
+			  	</select>
+			</div>
+		  	<label for="destino" class="col-sm-1 control-label">Destino</label>
+		  	<div class="col-sm-2 <?php if(form_error('aod')!='') echo 'has-error';?>">
+			  	<select class="select_destino" data-live-search="true" name="aod">
+			  		<option value="none">Seleccione un Destino</option>
+			  		<?php foreach($aeropuertos as $aeropuerto): ?>
+			  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
+			  		<?php endforeach; ?>
+			  	</select>
+			</div>			
+		  </div>
+
 		  <div class="form-group">
 		    <label for="aeropuerto" class="col-sm-2 control-label">Aerolínea</label>
 		    <div class="col-sm-2 <?php if(form_error('idaerolinea')!='') echo 'has-error';?>">
@@ -45,47 +65,24 @@
 			  		<?php endforeach; ?>
 			  	</select>
 			</div>		    
-		  </div>		
-
-		  <div class="form-group">
-		  	<label for="destino" class="col-sm-2 control-label">Origen</label>
-		  	<div class="col-sm-2 <?php if(form_error('aol')!='') echo 'has-error';?>">
-			  	<select class="select_origen" data-live-search="true" name="aol">
-					<option value="none">Seleccione un Origen</option>			  	
-			  		<?php foreach($aeropuertos as $aeropuerto): ?>
-			  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
-			  		<?php endforeach; ?>
-			  	</select>
-			</div>
-		  	<label for="destino" class="col-sm-1 control-label">Destino</label>
-		  	<div class="col-sm-2 <?php if(form_error('aod')!='') echo 'has-error';?>">
-			  	<select class="select_destino" data-live-search="true" name="aod">
-			  		<option value="none">Seleccione un Destino</option>
-			  		<?php foreach($aeropuertos as $aeropuerto): ?>
-			  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
-			  		<?php endforeach; ?>
-			  	</select>
-			</div>
-		  	<label for="destino" class="col-sm-1 control-label">Via</label>
-		  	<div class="col-sm-2">
-			  	<select class="select_via" data-live-search="true" name="idvias[]" multiple>
-			  		<option value="none">Seleccione los transbordos</option>
-			  		<?php foreach($aeropuertos as $aeropuerto): ?>
-			  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
-			  		<?php endforeach; ?>
-			  	</select>
-			</div>			
-		  </div>
+		  </div>		  
 		  
 		  <div class="form-group">
-		  	<div class="col-sm-2">
-				<label class="radio-inline">
-				  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Directo
+				<label class="control-label col-sm-3">
+				  <input type="radio" name="chkbox_via" id="inlineRadio1" value="directo" checked> Directo
 				</label>
-				<label class="radio-inline">
-				  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> Con Escalas
+				<label class="control-label col-sm-2">
+				  <input type="radio" name="chkbox_via" id="inlineRadio2" value="escalas"> Con Escalas
 				</label>
-			</div>
+			  	<label for="destino" class="col-sm-1 control-label">Via</label>
+			  	<div class="col-sm-2">
+				  	<select class="select_via" data-live-search="true" name="idvias[]" multiple disabled>
+				  		<option value="none">Seleccione los transbordos</option>
+				  		<?php foreach($aeropuertos as $aeropuerto): ?>
+				  			<option value="<?php echo $aeropuerto['idaeropuerto']?>"><?php echo $aeropuerto['code'] .' '. $aeropuerto['aeropuerto'];?></option>
+				  		<?php endforeach; ?>
+				  	</select>
+				</div>				
 		  </div>		  
 
 
