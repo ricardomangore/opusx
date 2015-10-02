@@ -17,8 +17,10 @@ $lang['error_login_auth'] = 'La cuenta de usuario no existe';
 $lang['error_required_region'] = 'El campo Región es obligatorio';
 //Formulario Add Aerolínea
 $lang['error_required_aerolinea'] = 'El campo Aerolínea es obligatorio';
-//Formulario Delte Aerolinea
+//Formulario Delete Aerolinea
 $lang['error_foreingkey_aerolinea'] = 'La Aerolínea tienen recargos relacionados';
+//Formulario Recargo Aereo
+$lang['error_foreingkey_recargo_aereo'] = 'El Recargo Aéreo esta relacionado con Fletes Aéreos';
 //Formulario Add Aeropuerto
 $lang['error_required_aeropuerto'] = 'El campo Aeropuerto es obligatorio';
 $lang['error_required_code'] = 'El campo Code es obligatorio';
@@ -27,3 +29,12 @@ $lang['error_required_clave'] = 'El campo Clave es obligatorio';
 $lang['error_required_costo'] = 'El campo Costo es obligatorio';
 
 $lang['error_aerolinea_required'] = 'Seleccione una aerolínea';
+
+//Formulario Add Puerto
+
+$lang['error_required_puerto'] = "El campo puerto es obligatorio";
+$lang['error_foreingkey_puerto'] = 'El Puerto esta relacionado con otros registros';
+
+//Formulario Add Naviera
+$lang['error_required_naviera'] = "El campo Naviera el obligatorio";
+$lang['error_foreingkey_naviera'] = 'La Naviera esta relacionado con otros registros';

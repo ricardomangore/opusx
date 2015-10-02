@@ -1,58 +1,122 @@
 <?php
-if(!defined('BASEPATH'))
-	exit('No direct script access allowed');
+if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Puerto extends CI_Model{
 	
 	public function __construct(){
 		parent::__construct();
 		$this->load->database();
-	}
+		$this->load->helper('security');
+	}	
+	
 	
 	/**
 	 * set_puerto()
 	 * 
-	 * Inserta un registro de puerto enla base de datos
+	 * Inserta el registro de un puerto en la tabla puerto
 	 * 
-	 * Regresa FALSE si no fue posible insertar 
-	 * Regresa TRUE si el registro se inserto exitosamente
+	 * @param	array	$data	Arreglo asociativo con pares de campo-valor
+	 * 							'puerto'
 	 */
-	public function set_puerto( $puerto ){	
-		if($this->db->insert('puerto', $puerto ))
-			return TRUE;
+	public function set_puerto( $data){
+		if(!$this->db->insert('puerto', $data)){//Si no pudo efectuar la inserción
+			throw new Exception('Error',1060);		
+		}
+	}
+	
+	/**
+	 * get_puerto_by_id()
+	 * 
+	 * Retorna el registro de la tabla puerto buscandolo por idpuerto
+	 * 
+	 * @param	int		$idpuerto		Identificador de puerto en la tabla de puerto
+	 */
+	public function get_puerto_by_id($idpuerto){
+		$query = $this->db->select('locode,puerto')
+						  ->where('idpuerto',$idpuerto)
+						  ->get('puerto');
+		$result = $query->result_array();
+		if(empty($query->result_array())){
+			throw new Exception('Error', 1061);
+		}
 		else
-			return FALSE; 
+			return $query->result_array();
+	}
+	
+	
+	/**
+	 * get_puertos()
+	 * 
+	 * Regresa una lista de puertos delimitada en orden u longitud por los parametros
+	 * 
+	 * @param	array	$param  Arreglo asociativo con valores para los parametros de busqueda
+	 * 							'offset'	desplazamiento de la busqueda
+	 * 							'value'		número de registros devueltos en la busqueda
+	 * 							'orderby'	campo sobre el cual ordenar
+	 * 							'direction'	Tipo de order 'ASC' o 'DESC'
+	 * 
+	 */
+	public function get_puertos($param = null){
+		if(isset($param))
+			extract($param);
+		$this->db->select('idpuerto,locode,puerto');
+		$this->db->from('puerto');
+		if(isset($offset))
+			$this->db->limit($value,$offset);
+		if(isset($orderby))
+			$this->db->order_by($orderby,$direction);
+		$query = $this->db->get();
+		$result = $query->result_array();
+		if(empty($result)){
+			throw new Exception('Error', 1062);
+		}else{
+			return $result;
+		}
+		
 	}
 	
 	/**
 	 * update_puerto()
 	 * 
-	 * Actualiza los datos de un registro de la tabla region
+	 * Actualiza los datos de un puerto
 	 * 
-	 * Regresa el numero de registros afectados
-	 * Regresa 0 si no efectuo ningun cambio
+	 * @param	array	$puerto	Arreglo con los datos a actualizar de una puerto
 	 */
-	public function update_puerto($puerto){
-		$data = array(
-			'puerto' => $puerto['puerto'],
-			'locode' => $puerto['locode']
-		);
-		$this->db->where('idpuerto', ((int) $puerto['idpuerto']) );
-		$var = $this->db->update('puerto', $data);
-		return $this->db->affected_rows();
-	}
+	public function update_puerto( $puerto = null){
+		if(isset($puerto)){
+			extract($puerto);
+			$data = array();
+			$this->db->where('idpuerto', $idpuerto);
+			if(isset($puerto))
+				$data['puerto'] = $puerto;
+			if(isset($locode))
+				$data['locode'] = $locode;
+			$result = $this->db->update('puerto', $data);
+			if(!$result){
+				throw new Exception('Error', 1063);
+			}
+		}else{
+			throw new Exception('Error', 6001);
+		}
+	} 
 	
-	public function get_puerto(){
-		
-	}
-	
-	public function get_list_puertos(){
-		$this->db->select('*');
-		$this->db->from('puerto');
-		$query = $this->db->get();		
-		if(empty($query->result_array()))//Si esta el arreglo esta vacio el usuario NO existe
-			return FALSE;
-		else
-			return $query->result_array(); 
+	/**
+	 * delete_puerto()
+	 * 
+	 * 
+	 */
+	public function delete_puerto($puerto = null){
+		if(isset($puerto)){
+			extract($puerto);
+			$this->db->where('idpuerto',$idpuerto);
+			$this->db->delete('puerto');
+			$error = $this->db->error();
+			if(isset($error)){
+				if($error['code'] == 1451)
+					throw new Exception('Error',1999);
+			}
+		}else{
+			throw new Exception('Error', 6001);
+		}	
 	}
 }

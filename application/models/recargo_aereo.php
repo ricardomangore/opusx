@@ -134,26 +134,36 @@ class Recargo_Aereo extends CI_Model{
 	 */
 	 function delete_recargo_aereo($recargo_aereo = null){
 	 	extract($recargo_aereo);
-		$this->db->trans_start();
-			$this->db->select('*');
-			$this->db->from('recargo_aereo');
-			$this->db->where('idrecargo_aereo', $idrecargo_aereo);
-			$query = $this->db->get();
-			$result = $query->result_array();
-
-			$this->db->where('idrecargo_aereo',$idrecargo_aereo);
-			$this->db->delete('recargo_aereo');			
-			
-			$this->db->where('idrecargo', $result[0]['idrecargo']);
-			$this->db->delete('recargo');
-			
-		$this->db->trans_complete();
-		if($this->db->trans_status() === FALSE){
-			$this->db->trans_rollback();
-			throw new Exception('Error',1054);	
+		$this->db->select('*');
+		$this->db->from('rel_flete_aereo_recargo_aereo');
+		$this->db->where('idrecargo_aereo', $idrecargo_aereo);
+		$query_rel = $this->db->get();
+		if(empty($query_rel->result_array())){
+			$this->db->trans_start();
+				$this->db->select('*');
+				$this->db->from('recargo_aereo');
+				$this->db->where('idrecargo_aereo',$idrecargo_aereo);
+				$query = $this->db->get();
+				$idrecargos = $query->result_array();
+				
+				$this->db->where('idrecargo_aereo',$idrecargo_aereo);
+				$this->db->delete('recargo_aereo');			
+				
+				foreach($idrecargos as $idrecargo ){
+					$this->db->where('idrecargo', $idrecargo['idrecargo']);
+					$this->db->delete('recargo');
+				}
+				
+			$this->db->trans_complete();
+			if($this->db->trans_status() === FALSE){
+				$this->db->trans_rollback();
+				throw new Exception('Error',1054);	
+			}else{
+				$this->db->trans_commit();
+				return TRUE;
+			}
 		}else{
-			$this->db->trans_commit();
-			return TRUE;
+			throw new Exception('Error',1999);
 		}
 	 }
 }

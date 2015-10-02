@@ -21,7 +21,7 @@ class Naviera extends CI_Model{
 	 */
 	public function set_naviera( $data){
 		if(!$this->db->insert('naviera', $data)){//Si no pudo efectuar la inserción
-			throw new Exception('Error',1007);		
+			throw new Exception('Error',1070);		
 		}
 	}
 	
@@ -38,7 +38,7 @@ class Naviera extends CI_Model{
 						  ->get('naviera');
 		$result = $query->result_array();
 		if(empty($query->result_array())){
-			throw new Exception('Error', 1008);
+			throw new Exception('Error', 1071);
 		}
 		else
 			return $query->result_array();
@@ -57,7 +57,7 @@ class Naviera extends CI_Model{
 	 * 							'direction'	Tipo de order 'ASC' o 'DESC'
 	 * 
 	 */
-	public function get_users($param = null){
+	public function get_navieras($param = null){
 		if(isset($param))
 			extract($param);
 		$this->db->select('idnaviera,naviera');
@@ -69,11 +69,10 @@ class Naviera extends CI_Model{
 		$query = $this->db->get();
 		$result = $query->result_array();
 		if(empty($result)){
-			throw new Exception('Error', 1009);
+			throw new Exception('Error', 1072);
 		}else{
 			return $result;
-		}
-		
+		}	
 	}
 	
 	/**
@@ -81,26 +80,18 @@ class Naviera extends CI_Model{
 	 * 
 	 * Actualiza los datos de un usuario
 	 * 
-	 * @param	array	$user	Arreglo con los datos a actualizar de un usuario
+	 * @param	array	$naviera	Arreglo con los datos a actualizar de una naviera
 	 */
-	public function update_user_profile( $naviera = null){
-		if(isset($user)){
-			extract($user);
+	public function update_naviera( $naviera = null){
+		if(isset($naviera)){
+			extract($naviera);
 			$data = array();
 			$this->db->where('idnaviera', $idnaviera);
-			if(isset($user))
-				$data['naviera'] = $user;
-			/*if(isset($name))
-				$data['name'] = $name;
-			if(isset($last_name)) 
-				$data['last_name']= $last_name;
-			if(isset($mail))
-				$data['mail'] = $mail;
-			if(isset($password))
-				$data['password'] = $password;*/
+			if(isset($naviera))
+				$data['naviera'] = $naviera;
 			$result = $this->db->update('naviera', $data);
 			if(!$result){
-				throw new Exception('Error', 1010);
+				throw new Exception('Error', 1073);
 			}
 		}else{
 			throw new Exception('Error', 6001);
@@ -117,9 +108,11 @@ class Naviera extends CI_Model{
 			extract($naviera);
 			$this->db->where('idnaviera',$idnaviera);
 			$this->db->delete('naviera');
-			$affected_rows = $this->db->affected_rows();
-			if($affected_rows == 0)
-				throw new Exception('Error', 1006);
+			$error = $this->db->error();
+			if(isset($error)){
+				if($error['code'] == 1451)
+					throw new Exception('Error',1999);
+			}
 		}else{
 			throw new Exception('Error', 6001);
 		}	

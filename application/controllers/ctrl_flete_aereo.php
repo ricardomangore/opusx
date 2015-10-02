@@ -66,9 +66,13 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 		}	
 		//Se optienen y limpian los valores enviados desde el formulario
 		
-		$via_bool = TRUE;//xss_clean($this->input->post('via_bool'));
+		$chkbox_via = xss_clean($this->input->post('chkbox_via'));
+		if($chkbox_via == 'directo')
+			$via_bool = FALSE;
+		else
+			$via_bool = TRUE;
 		$idvias = xss_clean($this->input->post('idvias[]'));
-		$idrecargos = xss_clean($this->input->post('idrecargos[]'));
+		$idrecargos = $this->input->post('idrecargos[]');
 		$aol = xss_clean($this->input->post('aol'));
 		$aod = xss_clean($this->input->post('aod'));
 		$idregion = xss_clean($this->input->post('idregion'));
@@ -112,7 +116,10 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 				'max' => 1000000,
 				'precio' => $precio5
 			));											
-		
+		if(empty($idrecargos))
+			$has_recargos = FALSE;
+		else	
+			$has_recargos = TRUE;
 		//Se validan los valores
 		$this->form_validation->set_rules('idaerolinea', 'IDAerolinea', 'callback_idaerolinea_check');
 		$this->form_validation->set_rules('idregion', 'IDregion', 'callback_idregion_check');
@@ -135,7 +142,7 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 				'has_via' => $via_bool,
 				'vias' => $idvias,
 				'intervalos' => $precios,
-				'has_recargos' => TRUE,
+				'has_recargos' => $has_recargos,
 				'recargos' => $idrecargos
 				
 			);
