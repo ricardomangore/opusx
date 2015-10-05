@@ -1,7 +1,7 @@
 <?php
-if(!defined('BASEPATH')) 	exit('No direct script access allowed');
+if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Flete_Aereo extends CI_Model{
+class Flete_Maritimo extends CI_Model{
 	
 	public function __construct(){
 		parent::__construct();
@@ -12,53 +12,52 @@ class Flete_Aereo extends CI_Model{
 	/**
 	 * set_flete_aere
 	 * 
-	 * Inserta un nuevo registro en las tablas de flete_aereo y  recargo_aereo
+	 * Inserta un nuevo registro en las tablas de flete_marítimo y  recargo_marítimo
 	 * 
-	 * @param $recargo array	Arreglo con valores para cada uno de los campos de flete_aereo
-	 * 							'vias' array()		Arreglo con la lista de identificadores de Aeropuertos en oso que se efectuara transbordo
-	 * 							'aol'				Identificador del Aeropuerto de carga
-	 * 							'aod'				Identificador del Aeropuerto de descarga
-	 * 							'idregion'			Identificador de la región
-	 * 							'idaerolinea'		Identificador de la aerollínea
+	 * @param $recargo array	Arreglo con valores para cada uno de los campos de flete_marítimo
+	 * 							'vias' array()		Arreglo con la lista de identificadores de Puertos en los que se efectuara transbordo
+	 * 							'recargos' array()  Arreglo con los identificadores de recargos asignados al flete
+	 * 							'idcarga'			Identificador único de la carga
+	 * 							'tipo'              Entero que indica el tipo de carga 1-Consolidad, 2-Contenerizada
+	 * 							'precio'			Precio
+	 * 							'tt'				Tiempo de transito
+	 * 							'vigencia'			Fecha hasta la cual es valida la tarifa
+	 * 							'pol'		        Puerto de carga
+	 *                          'pod'  				Puerto de descarga
 	 * 							'vigencia'			Fecha de la vigencia de la tarifa
-	 * 							'minimo'			Valor mínimo para la tafira
-	 * 							'normal'			Indicador
-	 * 							'precios' array()	Arreglo con la lsita de precion por rango ofrececidos por la aerolínea
+	 * 							'idnaviera'	        Identificador único de la naviera
+	 * 							'idregion' 			Identificador único de la región
 	 */
-	public function set_flete_aereo( $data ){
+	public function set_flete_maritimo( $data ){
 		extract($data);
 		$this->db->trans_start();
-
 			$flete_aereo = array(
-				'via' => $has_via,
-				'aol' => $aol,
-				'aod' => $aod,
+				'has_via' => $has_via,
+				'pol' => $aol,
+				'pod' => $aod,
 				'idregion' => $idregion,
-				'idaerolinea' => $idaerolinea,
+				'idnaviera' => $idaerolinea,
 				'vigencia'=> $vigencia,
-				'minimo' => $minimo,
-				'normal' => $normal,
+				'tt' => $tt,
+				'precio' => $precio
 			);
 			$this->db->insert('flete_aereo', $flete_aereo );
 			$idflete_aereo = $this->db->insert_id();
-			foreach($intervalos as $intervalo){
-				$this->db->insert('intervalo', array(
-					'idflete_aereo' => $idflete_aereo,
-					'precio' => $intervalo['precio'],
-					'min'	 => $intervalo['min'],
-					'max'    => $intervalo['max']
-				));
-			}
+			$this->db->insert('rel_flete_maritimo_carga',array(
+				'idcarga' => $idcarga,
+				'idflete_maritimo' => $idflete_maritimo,
+				'tipo' => $tipo
+			));
 			if($has_via)
 				foreach($vias as $via){
-					$this->db->insert('via2', array(
-						'idflete_aereo' => $idflete_aereo,
+					$this->db->insert('via1', array(
+						'idflete_aereo' => $idflete_maritimo,
 						'idaeropuerto'  => $via
 					));
 				}
-			if($has_recargos)
+			if(!empty($recargos))
 				foreach($recargos as $recargo){
-					$this->db->insert('rel_flete_aereo_recargo_aereo', array(
+					$this->db->insert('rel_flete_maritimo_recargo_maritimo', array(
 						'idflete_aereo' => $idflete_aereo,
 						'idrecargo_aereo' => $recargo
 					));
@@ -68,7 +67,7 @@ class Flete_Aereo extends CI_Model{
 		$this->db->trans_complete();
 		if($this->db->trans_status() === FALSE){
 			$this->db->trans_rollback();
-			throw new Exception('Error',1060);
+			throw new Exception('Error',2020);
 		}else{
 			$this->db->trans_commit();
 			return TRUE;

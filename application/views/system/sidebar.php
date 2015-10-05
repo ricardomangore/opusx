@@ -10,7 +10,6 @@
 			<li><a href="<?php echo base_url();?>aerolineas"><i class="fa fa-plane"></i> Aerolíneas</a></li>
 			<li><a href="<?php echo base_url();?>aeropuertos"><i class="fa fa-road"></i> Aeropuertos</a></li>
 			<li><a href="<?php echo base_url();?>contenedores"><i class="fa fa-cube"></i> Contenedores</a></li>  							
-			<li><a href="<?php echo base_url();?>carga_consolidada"><i class="fa fa-cubes"></i> Carga Consolidada</a></li>
 			<li><a href="<?php echo base_url();?>recargos_aereos"><i class="fa fa-calculator"></i> Recargos Aéreos</a></li>
 			<li><a href="<?php echo base_url();?>recargos_maritimo"><i class="fa fa-calculator"></i> Recargos Marítimos</a></li>
 			<li><a href="<?php echo base_url(); ?>regiones"><i class="fa fa-map"></i> Región</a></li>

@@ -38,3 +38,10 @@ $lang['error_foreingkey_puerto'] = 'El Puerto esta relacionado con otros registr
 //Formulario Add Naviera
 $lang['error_required_naviera'] = "El campo Naviera el obligatorio";
 $lang['error_foreingkey_naviera'] = 'La Naviera esta relacionado con otros registros';
+
+//Formulario Add Contenedor
+$lang['error_required_pies'] = "El campo Pies es obligatorio";
+$lang['error_required_peso'] = "El campo Peso es obligatorio";
+$lang['error_required_volumen'] = "El campo Volumen es obligatorio";
+$lang['error_required_tare'] = "El campo Tare es obligatorio";
+$lang['error_required_tipo'] = "El campo Tipo es obligatorio";
