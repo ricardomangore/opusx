@@ -10,9 +10,9 @@ class Flete_Maritimo extends CI_Model{
 	
 	
 	/**
-	 * set_flete_aere
+	 * set_flete_maritimo
 	 * 
-	 * Inserta un nuevo registro en las tablas de flete_marítimo y  recargo_marítimo
+	 * Inserta un nuevo registro en las tablas de flete_marítimo
 	 * 
 	 * @param $recargo array	Arreglo con valores para cada uno de los campos de flete_marítimo
 	 * 							'vias' array()		Arreglo con la lista de identificadores de Puertos en los que se efectuara transbordo
@@ -31,38 +31,51 @@ class Flete_Maritimo extends CI_Model{
 	public function set_flete_maritimo( $data ){
 		extract($data);
 		$this->db->trans_start();
-			$flete_aereo = array(
-				'has_via' => $has_via,
-				'pol' => $aol,
-				'pod' => $aod,
+			$flete_maritimo = array(
+				'via' => $has_vias,
+				'pol' => $pol,
+				'pod' => $pod,
 				'idregion' => $idregion,
-				'idnaviera' => $idaerolinea,
+				'idnaviera' => $idnaviera,
 				'vigencia'=> $vigencia,
 				'tt' => $tt,
 				'precio' => $precio
 			);
-			$this->db->insert('flete_aereo', $flete_aereo );
-			$idflete_aereo = $this->db->insert_id();
-			$this->db->insert('rel_flete_maritimo_carga',array(
-				'idcarga' => $idcarga,
-				'idflete_maritimo' => $idflete_maritimo,
-				'tipo' => $tipo
-			));
-			if($has_via)
+			$this->db->insert('flete_maritimo', $flete_maritimo );
+			$idflete_maritimo = $this->db->insert_id();
+			var_dump($vias);
+			if($has_vias)
 				foreach($vias as $via){
 					$this->db->insert('via1', array(
-						'idflete_aereo' => $idflete_maritimo,
-						'idaeropuerto'  => $via
+						'idfletemaritimo' => $idflete_maritimo,
+						'idpuerto'  => $via
 					));
 				}
-			if(!empty($recargos))
+			if($has_recargos)
 				foreach($recargos as $recargo){
 					$this->db->insert('rel_flete_maritimo_recargo_maritimo', array(
-						'idflete_aereo' => $idflete_aereo,
-						'idrecargo_aereo' => $recargo
+						'idflete_maritimo' => $idflete_maritimo,
+						'idrecargo_maritmo' => $recargo
 					));
 				}
-			
+			if(isset($idcarga)){
+				$this->db->insert('rel_flete_maritimo_carga',array(
+					'idcarga' => $idcarga,
+					'idflete_maritimo' => $idflete_maritimo,
+					'tipo' => $tipo
+				));				
+			}else{
+				$this->db->insert('carga',array(
+					'peso' => $peso,
+					'volumen' => $volumen
+				));
+				$idcarga_aux = $this->db->insert_id();
+				$this->db->insert('rel_flete_maritimo_carga',array(
+					'idcarga' => $idcarga_aux,
+					'idflete_maritimo' => $idflete_maritimo,
+					'tipo' => $tipo
+				));				
+			}
 
 		$this->db->trans_complete();
 		if($this->db->trans_status() === FALSE){
@@ -75,69 +88,63 @@ class Flete_Maritimo extends CI_Model{
 	}
 	
 	/*
-	 * get_recargos_aereos()
+	 * get_fletes_maritimos()
 	 * 
-	 * Regresa una lista de recargos aéreos
+	 * Regresa una lista de fletes maritimos
 	 * 
 	 */
-	public function get_fletes_aereos( $param = null){
+	public function get_fletes_maritimos( $param = null){
 		$this->db->trans_start();
 			if(isset($param))
 				extract($param);
-			$this->db->select('idflete_aereo,via,aol,aod,region.idregion,region.region, aerolinea.idaerolinea, aerolinea.aerolinea, vigencia,minimo,normal');
-			$this->db->from('flete_aereo');
-			$this->db->join('region','flete_aereo.idregion = region.idregion','left');
-			$this->db->join('aerolinea','flete_aereo.idaerolinea = aerolinea.idaerolinea', 'left');
+			$this->db->select('*');
+			$this->db->from('flete_maritimo');
+			$this->db->join('region','flete_maritimo.idregion = region.idregion','left');
+			$this->db->join('naviera','flete_maritimo.idnaviera = naviera.idnaviera', 'left');
 			if(isset($offset))
 				$this->db->limit($value,$offset);
 			if(isset($orderby))
 				$this->db->order_by($orderby,$direction);
 			$query = $this->db->get();
-			$flete_aereo_array = $query->result_array();
+			$flete_maritimo_array = $query->result_array();
 			
-			$flete_aereo_result = array();
-			foreach($flete_aereo_array as $flete_aereo_row){
+			$flete_maritimo_result = array();
+			foreach($flete_maritimo_array as $flete_maritimo_row){
 
-				$this->db->select('code,pais,ciudad,aeropuerto');
-				$this->db->from('aeropuerto');
-				$this->db->where('idaeropuerto', $flete_aereo_row['aol']);
-				$query_aol = $this->db->get();
-				$query_aol->result_array();
+				$this->db->select('locode,puerto');
+				$this->db->from('puerto');
+				$this->db->where('idpuerto', $flete_maritimo_row['pol']);
+				$query_pol = $this->db->get();
+				$query_pol->result_array();
 
-				$this->db->select('code,pais,ciudad,aeropuerto');
-				$this->db->from('aeropuerto');
-				$this->db->where('idaeropuerto', $flete_aereo_row['aod']);
-				$query_aod = $this->db->get();
-				$query_aod->result_array();		
+				$this->db->select('locode,puerto');
+				$this->db->from('puerto');
+				$this->db->where('idpuerto', $flete_maritimo_row['pod']);
+				$query_pod = $this->db->get();
+				$query_pod->result_array();		
 				
-				$this->db->select('code,pais,ciudad,aeropuerto');
-				$this->db->from('via2');
-				$this->db->join('aeropuerto','via2.idaeropuerto = aeropuerto.idaeropuerto','left');
-				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);
+				$this->db->select('locode,puerto');
+				$this->db->from('via1');
+				$this->db->join('puerto','via1.idpuerto = puerto.idpuerto','left');
+				$this->db->where('idfletemaritimo', $flete_maritimo_row['idflete_maritimo']);
 				$query_via = $this->db->get();
 				$query_via->result_array();	
 				
-				$this->db->select('min,max,precio');
-				$this->db->from('intervalo');
-				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);	
-				$query_precios = $this->db->get();
-				
-				$this->db->select('idrel_flete_aereo_recargo_aereo,idflete_aereo, aerolinea,clave,descripcion,costo');
-				$this->db->from('rel_flete_aereo_recargo_aereo');
-				$this->db->join('recargo_aereo','rel_flete_aereo_recargo_aereo.idrecargo_aereo = recargo_aereo.idrecargo_aereo','left');
-				$this->db->join('aerolinea','recargo_aereo.idaerolinea = aerolinea.idaerolinea','left');
-				$this->db->join('recargo','recargo_aereo.idrecargo = recargo.idrecargo','left');
-				$this->db->where('idflete_aereo', $flete_aereo_row['idflete_aereo']);					
+				$this->db->select('idrel_flete_maritimo_recargo_maritimo,idflete_maritimo, naviera,clave,descripcion,costo');
+				$this->db->from('rel_flete_maritimo_recargo_maritimo');
+				$this->db->join('recargo_maritimo','rel_flete_maritimo_recargo_maritimo.idrecargo_maritmo = recargo_maritimo.idrecargo_maritimo','left');
+				$this->db->join('naviera','recargo_maritimo.idnaviera = naviera.idnaviera','left');
+				$this->db->join('recargo','recargo_maritimo.idrecargo = recargo.idrecargo','left');
+				$this->db->where('idflete_maritimo', $flete_maritimo_row['idflete_maritimo']);					
 				$query_recargos = $this->db->get();
 				$data = array(
-					'flete_aereo' => $flete_aereo_row,
-					'aol'	=> $query_aol->result_array()[0],
-					'aod'	=> $query_aod->result_array()[0],
+					'flete_maritimo' => $flete_maritimo_row,
+					'pol'	=> $query_pol->result_array()[0],
+					'pod'	=> $query_pod->result_array()[0],
 					'via'   => $query_via->result_array(),
-					'precios' => $query_precios->result_array(),
 					'recargos' => $query_recargos->result_array()
 				);
-				array_push($flete_aereo_result,$data);
+				array_push($flete_maritimo_result,$data);
 			}
 		$this->db->trans_complete();
 		if($this->db->trans_status() === FALSE){
@@ -145,7 +152,7 @@ class Flete_Maritimo extends CI_Model{
 			throw new Exception('Error', 1061);
 		}else{
 			$this->db->trans_commit();
-			return $flete_aereo_result;
+			return $flete_maritimo_result;
 		}
 	}
 	

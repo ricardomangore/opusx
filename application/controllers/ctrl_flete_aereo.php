@@ -41,7 +41,7 @@ class CTRL_Flete_Aereo extends OPX_Controller{
 		try{
 			$data_flete_aereo_form['rows'] = $this->flete_aereo->get_fletes_aereos(); 
 		}catch(Exception $e){
-			$data_fletes_aereos_form['rows'] = NULL;
+			$data_flete_aereo_form['rows'] = NULL;
 		}
 		//Se obtienen los valores para las listas desplegables
 		try{

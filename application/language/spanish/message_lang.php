@@ -45,3 +45,4 @@ $lang['error_required_peso'] = "El campo Peso es obligatorio";
 $lang['error_required_volumen'] = "El campo Volumen es obligatorio";
 $lang['error_required_tare'] = "El campo Tare es obligatorio";
 $lang['error_required_tipo'] = "El campo Tipo es obligatorio";
+
